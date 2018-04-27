@@ -1,7 +1,7 @@
-const webpack = require('webpack')
-const chalk = require('chalk')
+import webpack from 'webpack'
+import chalk from 'chalk'
 
-let build = function build (tasks) {
+export default function build (tasks) {
   let startTime = new Date().getTime()
   console.log() // Inserts an empty line
   console.log(chalk.blue('Webpack task:'))
@@ -26,8 +26,4 @@ let build = function build (tasks) {
     let duration = new Date().getTime() - startTime
     console.log(chalk.blue(`Webpack task completed in ${duration} ms`))
   })
-}
-
-module.exports = {
-  run: build
 }

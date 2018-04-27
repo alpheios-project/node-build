@@ -1,12 +1,11 @@
-const sass = require('node-sass')
-const mkdirp = require('mkdirp')
-const path = require('path')
-const fs = require('fs')
-const bytes = require('bytes')
-const chalk = require('chalk')
+import sass from 'node-sass'
+import mkdirp from 'mkdirp'
+import path from 'path'
+import fs from 'fs'
+import bytes from 'bytes'
+import chalk from 'chalk'
 
-let run = async function (config) {
-  'use strict'
+export default async function (config) {
   return new Promise(resolve => {
     let results = []
     let startTime = new Date().getTime()
@@ -82,8 +81,4 @@ let compileScss = async function (options) {
       })
     })
   })
-}
-
-module.exports = {
-  run: run
 }
