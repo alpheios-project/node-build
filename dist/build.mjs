@@ -1,13 +1,50 @@
-import path from 'path'
-import chalk from 'chalk'
+// Node build modules
 import webpack from './modules/webpack.mjs'
 import sass from './modules/sass.mjs'
 import imagemin from './modules/imagemin.mjs'
 
+// Config templates
+import templateDefault from './config/default.mjs'
+
+// Host project config file. Named `config.mjs`, it must be located in `build` directory of a host project
 const configFileName = 'config.mjs'
 const configModule = 'file:///' + path.posix.join(process.cwd().replace(/\\/g, '/'), 'build/', configFileName)
 
+// Support npm packages
+import path from 'path'
+import chalk from 'chalk'
+
 class Build {
+  constructor (config) {
+    this.config = config
+    this.module = Build.selectedModule
+    this.mode = Build.selectedMode
+    this.modeList = (this.mode === Build.defaultMode)? Build.allModes : [this.mode]
+  }
+
+  runModules () {
+    console.log(chalk.yellow(`Running ${this.module} module(s) in ${this.mode} mode(s)`))
+
+    if (this.module === Build.defaultModule) {
+      // Run all available modules
+      // Primary modules should run before webpack
+      let primaryModulesResults = Build.primaryModules.map(module => Build[module](this.config[module]))
+
+      Promise.all(primaryModulesResults).then(() => {
+        Build.webpack(this.modeList, this.config.webpack, templateDefault)
+      }).catch(err => {
+        console.log(`Error while executing one of the modules: ${err}`)
+      })
+    } else if (this.module === Build.webpackModule) {
+      // Run a webpack module only
+      Build.webpack(this.modeList, this.config.webpack, templateDefault)
+    }
+    else {
+      // Run any other single module
+      Build[this.module](this.config[this.module])
+    }
+  }
+
   static get modules () {
     // The first module is a default one, it will run all modules at once
     // The last module is always a webpack. It will run after all other modules
@@ -60,6 +97,10 @@ class Build {
     return Build.modes[0]
   }
 
+  static get allModes () {
+    return Build.modes.slice(1, Build.modes.length)
+  }
+
   static get selectedMode () {
     if (process.argv.length > 3) {
       const mode = process.argv[3]
@@ -76,7 +117,7 @@ class Build {
     }
   }
 
-  // Primary tasks
+  // Primary modules
   static imagemin (tasks) {
     if (tasks) {
       return imagemin(taks)
@@ -93,17 +134,10 @@ class Build {
     }
   }
 
-  static webpack (tasks) {
-    if (tasks) {
-      const mode = Build.selectedMode
-      if (mode === Build.defaultMode) {
-        return [
-          webpack(tasks[Build.modes[1]]),
-          webpack(tasks[Build.modes[2]])
-        ]
-      } else {
-        return [webpack(tasks[mode])]
-      }
+  // Webpack modules
+  static webpack (modes, config, configTemplate) {
+    if (modes) {
+      return webpack(modes, config, configTemplate)
     } else {
       return [new Promise(resolve => resolve('Nothing to do'))]
     }
@@ -112,32 +146,6 @@ class Build {
 
 import(configModule)
   .then(config => {
-    const selectedModule = Build.selectedModule
-    const selectedMode = Build.selectedMode
-
-    const webpackTasks = {
-      production: config.webpack.production.map(task => Object.assign(task, config.webpack.common)),
-      development: config.webpack.development.map(task => Object.assign(task, config.webpack.common))
-    }
-
-    console.log(chalk.yellow(`Running ${selectedModule} module(s) in ${selectedMode} mode(s)`))
-
-    if (selectedModule === Build.defaultModule) {
-      // Run all available modules
-      // Primary modules should run before webpack
-      let primaryModulesResults = Build.primaryModules.map(module => Build[module](config[module]))
-
-      Promise.all(primaryModulesResults).then(() => {
-        Promise.all(Build.webpack(webpackTasks)).catch(err => console.log(err))
-      }).catch(err => {
-        console.log(`Error while executing one of the modules: ${err}`)
-      })
-    } else if (selectedModule === Build.webpackModule) {
-      // Run a webpack module only
-      Promise.all(Build.webpack(webpackTasks)).catch(err => console.log(err))
-    }
-    else {
-      // Run any other single module
-      Build[selectedModule](config[selectedModule])
-    }
+    let build = new Build(config)
+    build.runModules()
   }).catch(e => console.error(`Cannot resolve a config file module ${configModule}: ${e}`))
