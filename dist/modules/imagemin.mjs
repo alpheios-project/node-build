@@ -1,11 +1,11 @@
-const path = require('path')
-const fs = require('fs')
-const imagemin = require('imagemin')
-const imageminJpegtran = require('imagemin-jpegtran')
-const imageminOptipng = require('imagemin-optipng')
-const imageminSvgo = require('imagemin-svgo')
-const bytes = require('bytes')
-const chalk = require('chalk')
+import path from 'path'
+import fs from 'fs'
+import imagemin from 'imagemin'
+import imageminJpegtran from 'imagemin-jpegtran'
+import imageminOptipng from 'imagemin-optipng'
+import imageminSvgo from 'imagemin-svgo'
+import bytes from 'bytes'
+import chalk from 'chalk'
 
 let readDir = function (dir, extensions, excludedDirs) {
   let files = []
@@ -23,8 +23,7 @@ let readDir = function (dir, extensions, excludedDirs) {
   return files
 }
 
-let run = async function (config) {
-  'use strict'
+export default async function (config) {
   return new Promise((resolve, reject) => {
     let results = []
     let startTime = new Date().getTime()
@@ -117,8 +116,4 @@ let optimize = async function (config) {
     }
   )
   return results
-}
-
-module.exports = {
-  run: run
 }
