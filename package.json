@@ -1,6 +1,6 @@
 {
   "name": "alpheios-node-build",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Alpheios Node Build Library",
   "main": "dist/build.js",
   "scripts": {},
@@ -51,7 +51,7 @@
     "style-loader": "^0.21.0",
     "uglifyjs-webpack-plugin": "^1.2.5",
     "url-loader": "^1.0.1",
-    "vue-loader": "^15.0.3",
+    "vue-loader": "^15.0.4",
     "vue-style-loader": "^4.1.0",
     "vue-svg-loader": "^0.5.0",
     "webpack": "^4.6.0",

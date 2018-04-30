@@ -9,16 +9,16 @@ const mergeStrategy = {
 
 export default function build (modes, config, configTemplate = {}) {
   const productionConfig = merge.strategy(mergeStrategy)(
-    configTemplate.production,
     configTemplate.common,
-    config.production,
-    config.common
+    configTemplate.production,
+    config.common,
+    config.production
   )
   const developmentConfig = merge.strategy(mergeStrategy)(
-    configTemplate.development,
     configTemplate.common,
-    config.development,
-    config.common
+    configTemplate.development,
+    config.common,
+    config.development
   )
 
   if (!Array.isArray(modes)) {

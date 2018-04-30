@@ -1,9 +1,10 @@
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import UglifyJsPlugin from 'uglifyjs-webpack-plugin'
+import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
 import path from 'path'
 const projectRoot = process.cwd()
 
-export default {
+const webpack = {
   // Settings that are shared between both production and development configs
   common: {
     context: path.join(projectRoot, 'src/'),
@@ -12,7 +13,6 @@ export default {
       libraryTarget: 'umd'
     },
     resolve: {
-      alias: {},
       mainFields: ['moduleExternal', 'module', 'main']
     },
     module: {
@@ -72,6 +72,12 @@ export default {
               }
             }
           ]
+        },
+        {
+          test: /\.(htmlf)$/,
+          use: {
+            loader: 'html-loader'
+          }
         }
       ]
     }
@@ -86,14 +92,27 @@ export default {
           cache: true,
           parallel: true,
           sourceMap: false
-        })
+        }),
+        new OptimizeCSSAssetsPlugin({})
       ]
-    }
+    },
+    plugins: [
+      new MiniCssExtractPlugin({
+        filename: 'style/style.min.css'
+      })
+    ]
   },
 
   // Settings that are used for development mode only
   development: {
     mode: 'development',
-    devtool: 'source-map'
+    devtool: 'source-map',
+    plugins: [
+      new MiniCssExtractPlugin({
+        filename: 'style/style.css'
+      })
+    ]
   }
 }
+
+export default { webpack }

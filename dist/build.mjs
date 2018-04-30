@@ -3,8 +3,13 @@ import webpack from './modules/webpack.mjs'
 import sass from './modules/sass.mjs'
 import imagemin from './modules/imagemin.mjs'
 
-// Config templates
-import templateDefault from './config/default.mjs'
+// Presets
+import libPreset from './presets/lib.mjs'
+import vuePreset from './presets/vue.mjs'
+const presets = {
+  lib: libPreset,
+  vue: vuePreset
+}
 
 // Host project config file. Named `config.mjs`, it must be located in `build` directory of a host project
 const configFileName = 'config.mjs'
@@ -19,25 +24,35 @@ class Build {
     this.config = config
     this.module = Build.selectedModule
     this.mode = Build.selectedMode
-    this.modeList = (this.mode === Build.defaultMode)? Build.allModes : [this.mode]
+    this.modeList = (this.mode === Build.defaults.modeName) ? Build.allModes : [this.mode]
+    this.presetName = Build.selectedPresetName
+    this.preset = presets[this.presetName]
+  }
+
+  static get defaults () {
+    return {
+      moduleName: Build.modules[0],
+      modeName: Build.modes[0],
+      presetName: 'lib'
+    }
   }
 
   runModules () {
-    console.log(chalk.yellow(`Running ${this.module} module(s) in ${this.mode} mode(s)`))
+    console.log(chalk.yellow(`Running ${this.module} module(s) in ${this.mode} mode(s) with ${this.presetName} preset`))
 
-    if (this.module === Build.defaultModule) {
+    if (this.module === Build.defaults.moduleName) {
       // Run all available modules
       // Primary modules should run before webpack
       let primaryModulesResults = Build.primaryModules.map(module => Build[module](this.config[module]))
 
       Promise.all(primaryModulesResults).then(() => {
-        Build.webpack(this.modeList, this.config.webpack, templateDefault)
+        Build.webpack(this.modeList, this.config.webpack, this.preset.webpack)
       }).catch(err => {
         console.log(`Error while executing one of the modules: ${err}`)
       })
     } else if (this.module === Build.webpackModule) {
       // Run a webpack module only
-      Build.webpack(this.modeList, this.config.webpack, templateDefault)
+      Build.webpack(this.modeList, this.config.webpack, this.preset.webpack)
     }
     else {
       // Run any other single module
@@ -56,10 +71,6 @@ class Build {
     ]
   }
 
-  static get defaultModule () {
-    return Build.modules[0]
-  }
-
   static get primaryModules () {
     return Build.modules.slice(1, Build.modules.length - 1)
   }
@@ -71,10 +82,10 @@ class Build {
   static get selectedModule () {
     if (process.argv.length > 2) {
       const module = process.argv[2]
-      if (!this.modules.includes(module)) {
+      if (!Build.modules.includes(module)) {
         console.error(`
   The first parameter (module name) must be one of the following: ${Build.modules.map(t => '"' + t + '"').join(', ')}.
-  With no parameters specified it will run all tasks at once.
+  With no parameter specified it will run all tasks at once.
      `)
         process.exit(1)
       }
@@ -93,10 +104,6 @@ class Build {
     ]
   }
 
-  static get defaultMode () {
-    return Build.modes[0]
-  }
-
   static get allModes () {
     return Build.modes.slice(1, Build.modes.length)
   }
@@ -104,23 +111,39 @@ class Build {
   static get selectedMode () {
     if (process.argv.length > 3) {
       const mode = process.argv[3]
-      if (!this.modes.includes(mode)) {
+      if (!Build.modes.includes(mode)) {
         console.error(`
   The second parameter (mode name) must be one of the following: ${Build.modes.map(t => '"' + t + '"').join(', ')}.
-  With no parameters specified it will run in production mode.
+  With no parameter specified it will run in production mode.
      `)
         process.exit(1)
       }
       return mode
     } else {
-      return Build.defaultMode
+      return Build.defaults.modeName
+    }
+  }
+
+  static get selectedPresetName () {
+    if (process.argv.length > 4) {
+      const preset = process.argv[4]
+      if (!Object.keys(presets).includes(preset)) {
+        console.error(`
+  The third parameter (preset name) must be one of the following: ${Object.keys(presets).map(t => '"' + t + '"').join(', ')}.
+  With no parameter specified it will run with the "lib" preset.
+     `)
+        process.exit(1)
+      }
+      return preset
+    } else {
+      return Build.defaults.presetName
     }
   }
 
   // Primary modules
   static imagemin (tasks) {
     if (tasks) {
-      return imagemin(taks)
+      return imagemin(tasks)
     } else {
       return new Promise(resolve => resolve('Nothing to do'))
     }

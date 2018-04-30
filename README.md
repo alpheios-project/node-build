@@ -23,3 +23,13 @@ debugging. Development version is generated with source maps, whenever possible.
 `node-build` takes a build configuration from `build/config.mjs` in a host project. Typical `config.mjs`
 is an ESM file that exports several config objects. The name of each object must match the name of a 
 module that will handle the task. Properties of configuration objects are module-specific.
+
+## Presets
+`node-build` can run with several presets. Each preset defines configuration options that will be merged
+with options form `build/config.mjs` in a host project. If no preset specified, a `lib` preset will be
+used.
+
+The following presets are defined currently:
+* `lib` (default): suitable for a JS library module with no UI.
+* `vue`: a preset for modules that uses Vue.js and its single file components (`.vue`) as well as CSS,
+Sass, and JPEG, PNG, and SVG images.
