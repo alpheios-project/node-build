@@ -21,6 +21,7 @@ import chalk from 'chalk'
 
 class Build {
   constructor (config) {
+    Build.checkArgs()
     this.config = config
     this.module = Build.selectedModule
     this.mode = Build.selectedMode
@@ -37,7 +38,6 @@ class Build {
   }
 
   runModules () {
-    Build.checkArgs()
     console.log(chalk.yellow(`Running ${this.module} module(s) in ${this.mode} mode(s) with ${this.presetName} preset`))
 
     if (this.module === Build.all.modules) {
@@ -61,8 +61,7 @@ class Build {
   }
 
   static checkArgs () {
-    console.log('check args')
-    if (process.argv.length <= 5) {
+    if (process.argv.length < 5) {
       Build.printUsageStatement()
       process.exit(1)
     }
@@ -101,7 +100,7 @@ class Build {
   }
 
   static get webpackModule () {
-    return Build.modules[Build.modules.length]
+    return Build.modules[Build.modules.length-1]
   }
 
   static get selectedModule () {
