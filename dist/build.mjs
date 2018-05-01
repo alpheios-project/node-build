@@ -24,23 +24,23 @@ class Build {
     this.config = config
     this.module = Build.selectedModule
     this.mode = Build.selectedMode
-    this.modeList = (this.mode === Build.defaults.modeName) ? Build.allModes : [this.mode]
+    this.modeList = (this.mode === Build.all.modes) ? Build.allModes : [this.mode]
     this.presetName = Build.selectedPresetName
     this.preset = presets[this.presetName]
   }
 
-  static get defaults () {
+  static get all () {
     return {
-      moduleName: Build.modules[0],
-      modeName: Build.modes[0],
-      presetName: 'lib'
+      modules: Build.modules[0],
+      modes: Build.modes[0]
     }
   }
 
   runModules () {
+    Build.checkArgs()
     console.log(chalk.yellow(`Running ${this.module} module(s) in ${this.mode} mode(s) with ${this.presetName} preset`))
 
-    if (this.module === Build.defaults.moduleName) {
+    if (this.module === Build.all.modules) {
       // Run all available modules
       // Primary modules should run before webpack
       let primaryModulesResults = Build.primaryModules.map(module => Build[module](this.config[module]))
@@ -58,6 +58,31 @@ class Build {
       // Run any other single module
       Build[this.module](this.config[this.module])
     }
+  }
+
+  static checkArgs () {
+    console.log('check args')
+    if (process.argv.length <= 5) {
+      Build.printUsageStatement()
+      process.exit(1)
+    }
+  }
+
+  static printUsageStatement () {
+    console.error(`
+  Build script should be run with three parameters in the order shown below (ex. "node build.mjs module mode preset"):
+      module - a name of the module to use during build. Possible values: ${Build.modules.map(t => '"' + t + '"').join(', ')}.
+               "all": will run all modules.
+      mode   - a build mode. Possible values: ${Build.modes.map(t => '"' + t + '"').join(', ')}.
+               "production":  creates a highly-optimized production-ready code without source maps.
+               "development": renders a development code version optimized for debugging. 
+                              Development version is generated with source maps, whenever possible.
+               "all":         generates both production and development versions of a build.
+      preset - a name of preset that will be used by a build script. Possible values: ${Object.keys(presets).map(t => '"' + t + '"').join(', ')}.
+               "lib": for building a JS library with no UI.
+               "vue": a preset for a build that uses Vue.js and its single file components (".vue") as well as CSS,
+                      Sass, and JPEG, PNG, and SVG images.
+      `)
   }
 
   static get modules () {
@@ -80,21 +105,13 @@ class Build {
   }
 
   static get selectedModule () {
-    if (process.argv.length > 2) {
-      const module = process.argv[2]
-      if (!Build.modules.includes(module)) {
-        console.error(`
-  The first parameter (module name) must be one of the following: ${Build.modules.map(t => '"' + t + '"').join(', ')}.
-  With no parameter specified it will run all tasks at once.
-     `)
-        process.exit(1)
-      }
-      return module
-    } else {
-      return Build.defaultModule
+    const module = process.argv[2]
+    if (!Build.modules.includes(module)) {
+      Build.printUsageStatement()
+      process.exit(1)
     }
+    return module
   }
-
   static get modes () {
     // First module is a default one, it will run tasks in both production and development modes
     return [
@@ -109,37 +126,21 @@ class Build {
   }
 
   static get selectedMode () {
-    if (process.argv.length > 3) {
-      const mode = process.argv[3]
-      if (!Build.modes.includes(mode)) {
-        console.error(`
-  The second parameter (mode name) must be one of the following: ${Build.modes.map(t => '"' + t + '"').join(', ')}.
-  With no parameter specified it will run in production mode.
-     `)
-        process.exit(1)
-      }
-      return mode
-    } else {
-      return Build.defaults.modeName
+    const mode = process.argv[3]
+    if (!Build.modes.includes(mode)) {
+      Build.printUsageStatement()
+      process.exit(1)
     }
+    return mode
   }
-
   static get selectedPresetName () {
-    if (process.argv.length > 4) {
-      const preset = process.argv[4]
-      if (!Object.keys(presets).includes(preset)) {
-        console.error(`
-  The third parameter (preset name) must be one of the following: ${Object.keys(presets).map(t => '"' + t + '"').join(', ')}.
-  With no parameter specified it will run with the "lib" preset.
-     `)
-        process.exit(1)
-      }
-      return preset
-    } else {
-      return Build.defaults.presetName
+    const preset = process.argv[4]
+    if (!Object.keys(presets).includes(preset)) {
+      Build.printUsageStatement()
+      process.exit(1)
     }
+    return preset
   }
-
   // Primary modules
   static imagemin (tasks) {
     if (tasks) {
