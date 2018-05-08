@@ -3,7 +3,6 @@ import UglifyJsPlugin from 'uglifyjs-webpack-plugin'
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
 // import CleanWebpackPlugin from 'clean-webpack-plugin' // Does not work with ESM syntax because `module.parent` is undefined
 import WebpackCleanupPlugin from 'webpack-cleanup-plugin'
-import InjectManifest from '../../node_modules/workbox-webpack-plugin/build/inject-manifest.js'
 import path from 'path'
 const projectRoot = process.cwd()
 const sourceDir = path.join(projectRoot, 'src')
@@ -97,13 +96,7 @@ const webpack = {
         allowExternal: true,
         verbose: true
       }), */
-      new WebpackCleanupPlugin(),
-      new InjectManifest({
-        swSrc: path.join(projectRoot, 'src/sw.js'),
-        swDest: 'sw.js',
-        importWorkboxFrom: 'cdn',
-        globPatterns: ['dist/*.{json,js,html}']
-      })
+      new WebpackCleanupPlugin()
     ]
   },
 
