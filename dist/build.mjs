@@ -13,8 +13,8 @@ const presets = {
   'pwa-vue': pwaVuePreset
 }
 
-// Host project config file. Named `config.mjs`, it must be located in `build` directory of a host project
-const configFileName = 'config.mjs'
+// Host project config file. Must be located in `build` directory of a host project. Default filename is 'config.mjs'
+const configFileName = process.argv[5] ? process.argv[5] : 'config.mjs'
 const configModule = 'file:///' + path.posix.join(process.cwd().replace(/\\/g, '/'), 'build/', configFileName)
 
 // Support npm packages
@@ -71,18 +71,19 @@ class Build {
 
   static printUsageStatement () {
     console.error(`
-  Build script should be run with three parameters in the order shown below (ex. "node build.mjs module mode preset"):
+  Build script should be run with at least the required three parameters in the order shown below (ex. "node build.mjs module mode preset"):
       module - a name of the module to use during build. Possible values: ${Build.modules.map(t => '"' + t + '"').join(', ')}.
                "all": will run all modules.
       mode   - a build mode. Possible values: ${Build.modes.map(t => '"' + t + '"').join(', ')}.
                "production":  creates a highly-optimized production-ready code without source maps.
-               "development": renders a development code version optimized for debugging. 
+               "development": renders a development code version optimized for debugging.
                               Development version is generated with source maps, whenever possible.
                "all":         generates both production and development versions of a build.
       preset - a name of preset that will be used by a build script. Possible values: ${Object.keys(presets).map(t => '"' + t + '"').join(', ')}.
                "lib": for building a JS library with no UI.
                "vue": a preset for a build that uses Vue.js and its single file components (".vue") as well as CSS,
                       Sass, and JPEG, PNG, and SVG images.
+      [configFileName] - an optional parameter which can be used to override the default config file name (default is config.mjs)
       `)
   }
 
