@@ -32,7 +32,12 @@ const webpack = {
         new UglifyJsPlugin({
           cache: true,
           parallel: true,
-          sourceMap: false
+          sourceMap: false,
+          uglifyOptions: {
+            mangle: {
+              keep_classnames: true
+            }
+          }
         })
       ]
     }
