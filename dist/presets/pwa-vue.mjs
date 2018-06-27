@@ -107,7 +107,6 @@ const webpack = {
       minimizer: [
         new UglifyJsPlugin({
           cache: true,
-          parallel: true,
           sourceMap: false,
           uglifyOptions: {
             mangle: {
