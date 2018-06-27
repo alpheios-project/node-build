@@ -1,6 +1,6 @@
 {
   "name": "alpheios-node-build",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Alpheios Node Build Library",
   "main": "dist/build.js",
   "scripts": {},
@@ -65,7 +65,7 @@
   },
   "peerDependencies": {},
   "engines": {
-    "node": ">= 9.10.1",
+    "node": ">= 10.5.0",
     "npm": ">= 5.6.0"
   },
   "eslintConfig": {
