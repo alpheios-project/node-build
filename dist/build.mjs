@@ -40,7 +40,8 @@ class Build {
   }
 
   runModules () {
-    console.log(chalk.yellow(`Running ${this.module} module(s) in ${this.mode} mode(s) with ${this.presetName} preset`))
+
+    console.log(chalk.bold.white(`\nRunning ${this.module} module(s) in ${this.mode} mode(s) with ${this.presetName} preset. Config file: ${configFileName}`))
 
     if (this.module === Build.all.modules) {
       // Run all available modules

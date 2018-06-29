@@ -29,10 +29,10 @@ export default function build (modes, config, configTemplate = {}) {
   if (modes.includes('development')) { tasks.push(developmentConfig) }
 
   let startTime = new Date().getTime()
-  console.log() // Inserts an empty line
-  console.log(chalk.blue('Webpack tasks:'))
+  console.log(chalk.blue('\nWebpack tasks:'))
   for (const task of tasks) {
     webpack(task, (err, stats) => {
+      console.log(`Task: ${task.mode}`) // Inserts an empty line
       if (err) {
         console.error(err.stack || err)
         if (err.details) {
@@ -41,17 +41,33 @@ export default function build (modes, config, configTemplate = {}) {
         return
       }
       const info = stats.toJson()
-      if (stats.hasErrors()) { console.error(info.errors) }
-      if (stats.hasWarnings()) { console.warn(info.warnings) }
-
+      console.log()
       console.log(stats.toString({
         chunks: true,
         assets: true,
         hash: true,
         colors: true
       }))
+
+      if (stats.hasErrors()) {
+        console.log(chalk.bold.bgRed(`\nERRORS`))
+        if (Array.isArray(info.errors)) {
+          for (const err of info.errors) {
+            console.log(chalk.red(`${err}`))
+          }
+        }
+      }
+      if (stats.hasWarnings()) {
+        console.log(chalk.bold.bgYellow(`\nWARNINGS`))
+        if (Array.isArray(info.warnings)) {
+          for (const warn of info.warnings) {
+            console.log(chalk.yellow(`${warn}`))
+          }
+        }
+      }
+
       let duration = new Date().getTime() - startTime
-      console.log(chalk.blue(`Webpack task completed in ${duration} ms`))
+      console.log(chalk.blue(`\nWebpack task completed in ${duration} ms`))
     })
   }
 }
