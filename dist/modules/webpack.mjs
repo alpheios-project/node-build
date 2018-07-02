@@ -49,19 +49,20 @@ export default function build (modes, config, configTemplate = {}) {
         colors: true
       }))
 
-      if (stats.hasErrors()) {
-        console.log(chalk.bold.bgRed(`\nERRORS`))
-        if (Array.isArray(info.errors)) {
-          for (const err of info.errors) {
-            console.log(chalk.red(`${err}`))
-          }
-        }
-      }
       if (stats.hasWarnings()) {
         console.log(chalk.bold.bgYellow(`\nWARNINGS`))
         if (Array.isArray(info.warnings)) {
           for (const warn of info.warnings) {
             console.log(chalk.yellow(`${warn}`))
+          }
+        }
+      }
+
+      if (stats.hasErrors()) {
+        console.log(chalk.bold.bgRed(`\nERRORS`))
+        if (Array.isArray(info.errors)) {
+          for (const err of info.errors) {
+            console.log(chalk.red(`${err}`))
           }
         }
       }
