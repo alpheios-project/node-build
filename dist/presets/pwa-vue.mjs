@@ -78,11 +78,6 @@ const webpack = {
           ]
         },
         {
-          test: /\.json$/,
-          use: 'raw-loader',
-          type: 'javascript/auto' // To prevent running Webpack's default JSON parser on the output of raw-loader
-        },
-        {
           test: /\.(htmlf)$/,
           use: {
             loader: 'html-loader'
