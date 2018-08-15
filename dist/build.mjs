@@ -7,13 +7,15 @@ import imagemin from './modules/imagemin.mjs'
 import libPreset from './presets/lib.mjs'
 import vuePreset from './presets/vue.mjs'
 import pwaVuePreset from './presets/pwa-vue.mjs'
-import nodeAppPreset from './presets/node-app.mjs'
+import nodeAppPreset from './presets/node-app.mjs' //for cmd applications
+import nodeLibPreset from './presets/node-lib.mjs' //for libs used in cmd applications
 
 const presets = {
   lib: libPreset,
   vue: vuePreset,
   'pwa-vue': pwaVuePreset,
-  'node-app': nodeAppPreset
+  'node-app': nodeAppPreset,
+  'node-lib': nodeLibPreset
 }
 
 // Host project config file. Must be located in `build` directory of a host project. Default filename is 'config.mjs'
