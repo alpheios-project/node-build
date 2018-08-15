@@ -4,12 +4,8 @@ const projectRoot = process.cwd()
 const webpack = {
   common: {
     target: "node",
-    entry: {
-      app: ["./src/index.js"]
-    },
     output: {
-      path: path.resolve(projectRoot, "./dist"),
-      filename: "alpheios-lt-cmdtool.js"
+      path: path.resolve(projectRoot, "./dist")
     },
     externals: [],
     mode: "development",
