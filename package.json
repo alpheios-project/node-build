@@ -8,8 +8,8 @@
     "type": "git",
     "url": "git+https://github.com/alpheios-project/node-build.git"
   },
-  "author": "",
-  "license": "MIT",
+  "author": "The Alpheios Project, Ltd.",
+  "license": "ISC",
   "bugs": {
     "url": "https://github.com/alpheios-project/node-build/issues"
   },
