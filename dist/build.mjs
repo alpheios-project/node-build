@@ -6,6 +6,7 @@ import imagemin from './modules/imagemin.mjs'
 // Presets
 import libPreset from './presets/lib.mjs'
 import vuePreset from './presets/vue.mjs'
+import vuePostcssPreset from './presets/vue-postcss.mjs'
 import pwaVuePreset from './presets/pwa-vue.mjs'
 import nodeAppPreset from './presets/node-app.mjs' //for cmd applications
 import nodeLibPreset from './presets/node-lib.mjs' //for libs used in cmd applications
@@ -13,6 +14,7 @@ import nodeLibPreset from './presets/node-lib.mjs' //for libs used in cmd applic
 const presets = {
   lib: libPreset,
   vue: vuePreset,
+  'vue-postcss': vuePostcssPreset,
   'pwa-vue': pwaVuePreset,
   'node-app': nodeAppPreset,
   'node-lib': nodeLibPreset
