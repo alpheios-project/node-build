@@ -46,6 +46,7 @@
     "path": "^0.12.7",
     "postcss-import": "^11.0.0",
     "postcss-loader": "^2.1.6",
+    "postcss-safe-important": "^1.1.0",
     "raw-loader": "^0.5.1",
     "sass-loader": "^7.0.3",
     "semver": "^5.5.0",
