@@ -1,4 +1,4 @@
-import UglifyJsPlugin from 'uglifyjs-webpack-plugin'
+import TerserPlugin from 'terser-webpack-plugin'
 import path from 'path'
 const projectRoot = process.cwd()
 
@@ -29,13 +29,22 @@ const webpack = {
     mode: 'production',
     optimization: {
       minimizer: [
-        new UglifyJsPlugin({
+        new TerserPlugin({
           cache: true,
-          sourceMap: false,
-          uglifyOptions: {
-            mangle: {
-              keep_classnames: true
-            }
+          terserOptions: {
+            ecma: undefined,
+            warnings: false,
+            parse: {},
+            compress: {},
+            mangle: true, // Note `mangle.properties` is `false` by default.
+            module: false,
+            output: null,
+            toplevel: false,
+            nameCache: null,
+            ie8: false,
+            keep_classnames: true,
+            keep_fnames: false,
+            safari10: false
           }
         })
       ]

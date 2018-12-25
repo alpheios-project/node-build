@@ -1,5 +1,5 @@
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
-import UglifyJsPlugin from 'uglifyjs-webpack-plugin'
+import TerserPlugin from 'terser-webpack-plugin'
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
 // import CleanWebpackPlugin from 'clean-webpack-plugin' // Does not work with ESM syntax because `module.parent` is undefined
 import WebpackCleanupPlugin from 'webpack-cleanup-plugin'
@@ -100,13 +100,22 @@ const webpack = {
     mode: 'production',
     optimization: {
       minimizer: [
-        new UglifyJsPlugin({
+        new TerserPlugin({
           cache: true,
-          sourceMap: false,
-          uglifyOptions: {
-            mangle: {
-              keep_classnames: true
-            }
+          terserOptions: {
+            ecma: undefined,
+            warnings: false,
+            parse: {},
+            compress: {},
+            mangle: true, // Note `mangle.properties` is `false` by default.
+            module: false,
+            output: null,
+            toplevel: false,
+            nameCache: null,
+            ie8: false,
+            keep_classnames: true,
+            keep_fnames: false,
+            safari10: false
           }
         }),
         new OptimizeCSSAssetsPlugin({})
