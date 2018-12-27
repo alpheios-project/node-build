@@ -38,7 +38,20 @@ let copyToDir = (sourceDir, targetDir, files, overwrite = false) => {
       fs.copyFileSync(path.join(sourceDir, file), path.join(targetDir, file), flags)
       count++
     } catch {
-      console.error(`    Cannot copy ${file} into ${targetDir}. File already exists?`)
+      fs.exists(path.join(sourceDir, file), exists => {
+        if (!exists) {
+          console.error(`    Source file ${file} does not exist in ${sourceDir}`)
+        } else {
+          fs.exists(path.join(targetDir, file), exists => {
+            if (exists && !overwrite) {
+              console.error(`    Cannot copy ${file} because such file already exists in ${targetDir}`)
+            } else {
+              console.error(`    Cannot copy ${file} into ${targetDir}`)
+            }
+          })
+        }
+      })
+
     }
   }
   return count
