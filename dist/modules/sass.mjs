@@ -1,4 +1,5 @@
-import sass from 'node-sass'
+import sass from 'sass'
+import fibers from 'fibers'
 import mkdirp from 'mkdirp'
 import path from 'path'
 import fs from 'fs'
@@ -11,6 +12,18 @@ export default async function (config) {
     let startTime = new Date().getTime()
     for (let task of config.tasks) {
       let destFileName = task.target || 'dist/styles/style.css'
+/*
+      sass.render({
+        data: task.source || 'src/styles/style.scss',
+        file: destFileName,
+        importer: function(url, prev, done) {
+          // ...
+        },
+        fiber: fibers,
+      }, function(err, result) {
+        // ...
+      });*/
+
       results.push(compileScss({
         src: task.source || 'src/styles/style.scss',
         cssFileName: destFileName.replace(/\.css/, '.min.css'),
@@ -46,7 +59,8 @@ let compileScss = async function (options) {
       file: options.src,
       outputStyle: options.style,
       sourceMap: options.sourceMap,
-      outFile: options.cssFileName
+      outFile: options.cssFileName,
+      fiber: fibers
     }, (error, result) => {
       if (error) results.push(error)
 

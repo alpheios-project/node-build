@@ -1,5 +1,7 @@
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import TerserPlugin from 'terser-webpack-plugin'
+import sass from 'sass'
+import fibers from 'fibers'
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
 // import CleanWebpackPlugin from 'clean-webpack-plugin' // Does not work with ESM syntax because `module.parent` is undefined
 import WebpackCleanupPlugin from 'webpack-cleanup-plugin'
@@ -72,6 +74,8 @@ const webpack = {
             {
               loader: 'sass-loader',
               options: {
+                implementation: sass,
+                fiber: fibers,
                 sourceMap: true
               }
             }
