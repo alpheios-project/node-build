@@ -12,17 +12,6 @@ export default async function (config) {
     let startTime = new Date().getTime()
     for (let task of config.tasks) {
       let destFileName = task.target || 'dist/styles/style.css'
-/*
-      sass.render({
-        data: task.source || 'src/styles/style.scss',
-        file: destFileName,
-        importer: function(url, prev, done) {
-          // ...
-        },
-        fiber: fibers,
-      }, function(err, result) {
-        // ...
-      });*/
 
       results.push(compileScss({
         src: task.source || 'src/styles/style.scss',
