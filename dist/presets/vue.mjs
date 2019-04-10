@@ -45,7 +45,8 @@ const webpack = {
             svgo: {
               plugins: [
                 {removeDoctype: true},
-                {removeComments: true}
+                {removeComments: true},
+                {inlineStyles: false}
               ]
             }
           }
