@@ -37,6 +37,13 @@ class Build {
     this.modeList = (this.mode === Build.all.modes) ? Build.allModes : [this.mode]
     this.presetName = Build.selectedPresetName
     this.preset = presets[this.presetName]
+    this.codeAnalysis = Build.needsCodeAnalysis
+    this.webpackOptions = {
+      modes: this.modeList,
+      codeAnalysis: this.codeAnalysis,
+      config: this.config.webpack,
+      configTemplate: this.preset.webpack || {}
+    }
   }
 
   static get all () {
@@ -56,13 +63,13 @@ class Build {
       let primaryModulesResults = Build.primaryModules.map(module => Build[module](this.config[module]))
 
       Promise.all(primaryModulesResults).then(() => {
-        Build.webpack(this.modeList, this.config.webpack, this.preset.webpack)
+        Build.webpack(this.webpackOptions)
       }).catch(err => {
         console.log(`Error while executing one of the modules: ${err}`)
       })
     } else if (this.module === Build.webpackModule) {
       // Run a webpack module only
-      Build.webpack(this.modeList, this.config.webpack, this.preset.webpack)
+      Build.webpack(this.webpackOptions)
     }
     else {
       // Run any other single module
@@ -122,12 +129,14 @@ class Build {
     }
     return module
   }
+
   static get modes () {
     // First module is a default one, it will run tasks in both production and development modes
     return [
       'all',
       'production',
-      'development'
+      'development',
+      'code-analysis'
     ]
   }
 
@@ -143,6 +152,7 @@ class Build {
     }
     return mode
   }
+
   static get selectedPresetName () {
     const preset = process.argv[4]
     if (!Object.keys(presets).includes(preset)) {
@@ -150,6 +160,12 @@ class Build {
       process.exit(1)
     }
     return preset
+  }
+
+  static get needsCodeAnalysis () {
+    let result = process.argv.includes('--code-analysis')
+    console.info(`Code analysis: ${result}`)
+    return result
   }
   // Primary modules
   static imagemin (tasks) {
@@ -169,9 +185,9 @@ class Build {
   }
 
   // Webpack modules
-  static webpack (modes, config, configTemplate) {
-    if (modes) {
-      return webpack(modes, config, configTemplate)
+  static webpack (options) {
+    if (options.modes) {
+      return webpack(options)
     } else {
       return [new Promise(resolve => resolve('Nothing to do'))]
     }

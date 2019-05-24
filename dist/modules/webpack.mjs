@@ -1,35 +1,46 @@
 import webpack from 'webpack'
 import merge from 'webpack-merge'
 import chalk from 'chalk'
+import {createRequire} from 'module'
+const require = createRequire(import.meta.url)
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const mergeStrategy = {
   'externals': 'replace',
   'resolve.mainFields': 'append',
   'resolve.alias': 'replace'
 }
 
-export default function build (modes, config, configTemplate = {}) {
+const codeAnalysisConfig = {
+  plugins: [
+    new BundleAnalyzerPlugin()
+  ]
+}
+
+export default function build (options/*, modes, config, configTemplate = {}*/) {
   const productionConfig = merge.strategy(mergeStrategy)(
-    configTemplate.common,
-    configTemplate.production,
-    config.common,
-    config.production
+    options.configTemplate.common,
+    options.configTemplate.production,
+    options.config.common,
+    options.config.production,
+    options.codeAnalysis ? codeAnalysisConfig : {}
   )
   const developmentConfig = merge.strategy(mergeStrategy)(
-    configTemplate.common,
-    configTemplate.development,
-    config.common,
-    config.development
+    options.configTemplate.common,
+    options.configTemplate.development,
+    options.config.common,
+    options.config.development,
+    options.codeAnalysis ? codeAnalysisConfig : {}
   )
 
-  if (!Array.isArray(modes)) {
-    modes = [modes]
+  if (!Array.isArray(options.modes)) {
+    options.modes = [options.modes]
   }
   let tasks = []
-  if (modes.includes('production')) { tasks.push(productionConfig) }
-  if (modes.includes('development')) { tasks.push(developmentConfig) }
+  if (options.modes.includes('production')) { tasks.push(productionConfig) }
+  if (options.modes.includes('development')) { tasks.push(developmentConfig) }
 
   let startTime = new Date().getTime()
-  console.log(chalk.blue('\nWebpack tasks:'))
+  console.log(chalk.blue(`\nWebpack tasks (code analysis is ${options.codeAnalysis ? 'on' : 'off'}):`))
   for (const task of tasks) {
     webpack(task, (err, stats) => {
       console.log(`Task: ${task.mode}`) // Inserts an empty line
