@@ -81,7 +81,7 @@ const webpack = {
         {
           test: /\.(htmlf)$/,
           use: {
-            loader: 'html-loader'
+            loader: 'vue-template-loader'
           }
         }
       ]

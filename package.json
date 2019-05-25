@@ -61,6 +61,7 @@
     "vue-style-loader": "^4.1.2",
     "vue-svg-loader": "^0.12.0",
     "vue-template-compiler": "^2.6.10",
+    "vue-template-loader": "^1.0.0",
     "webpack": "^4.32.2",
     "webpack-bundle-analyzer": "^3.3.2",
     "webpack-cleanup-plugin": "^0.5.1",
@@ -83,5 +84,7 @@
       "sourceType": "module"
     }
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "inspectpack": "^4.2.1"
+  }
 }

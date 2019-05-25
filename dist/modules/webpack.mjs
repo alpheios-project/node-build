@@ -4,6 +4,7 @@ import chalk from 'chalk'
 import {createRequire} from 'module'
 const require = createRequire(import.meta.url)
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const { DuplicatesPlugin } = require("inspectpack/plugin");
 const mergeStrategy = {
   'externals': 'replace',
   'resolve.mainFields': 'append',
@@ -12,11 +13,24 @@ const mergeStrategy = {
 
 const codeAnalysisConfig = {
   plugins: [
-    new BundleAnalyzerPlugin()
+    new DuplicatesPlugin({
+      // Emit compilation warning or error? (Default: `false`)
+      emitErrors: false,
+      // Handle all messages with handler function (`(report: string)`)
+      // Overrides `emitErrors` output.
+      emitHandler: undefined,
+      // Display full duplicates information? (Default: `false`)
+      verbose: true
+    }),
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+      reportFilename: '../reports/bundle-analyzer-report.html',
+      generateStatsFile: false
+    })
   ]
 }
 
-export default function build (options/*, modes, config, configTemplate = {}*/) {
+export default function build (options) {
   const productionConfig = merge.strategy(mergeStrategy)(
     options.configTemplate.common,
     options.configTemplate.production,
@@ -40,7 +54,7 @@ export default function build (options/*, modes, config, configTemplate = {}*/) 
   if (options.modes.includes('development')) { tasks.push(developmentConfig) }
 
   let startTime = new Date().getTime()
-  console.log(chalk.blue(`\nWebpack tasks (code analysis is ${options.codeAnalysis ? 'on' : 'off'}):`))
+  console.log(chalk.blue(`\nWebpack tasks:`))
   for (const task of tasks) {
     webpack(task, (err, stats) => {
       console.log(`Task: ${task.mode}`) // Inserts an empty line

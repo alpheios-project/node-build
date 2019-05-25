@@ -55,7 +55,7 @@ class Build {
 
   runModules () {
 
-    console.log(chalk.bold.white(`\nRunning ${this.module} module(s) in ${this.mode} mode(s) with ${this.presetName} preset. Config file: ${configFileName}`))
+    console.log(chalk.bold.white(`\nRunning ${this.module} module(s) in ${this.mode} mode(s) with ${this.presetName} preset. Config file: ${configFileName}. Code analysis is ${this.codeAnalysis ? 'on' : 'off'}`))
 
     if (this.module === Build.all.modules) {
       // Run all available modules
@@ -163,9 +163,7 @@ class Build {
   }
 
   static get needsCodeAnalysis () {
-    let result = process.argv.includes('--code-analysis')
-    console.info(`Code analysis: ${result}`)
-    return result
+    return process.argv.includes('--code-analysis')
   }
   // Primary modules
   static imagemin (tasks) {
