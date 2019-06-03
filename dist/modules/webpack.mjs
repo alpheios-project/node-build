@@ -31,14 +31,14 @@ const codeAnalysisConfig = {
 }
 
 export default function build (options) {
-  const productionConfig = merge.strategy(mergeStrategy)(
+  const productionConfig = merge.smartStrategy(mergeStrategy)(
     options.configTemplate.common,
     options.configTemplate.production,
     options.config.common,
     options.config.production,
     options.codeAnalysis ? codeAnalysisConfig : {}
   )
-  const developmentConfig = merge.strategy(mergeStrategy)(
+  const developmentConfig = merge.smartStrategy(mergeStrategy)(
     options.configTemplate.common,
     options.configTemplate.development,
     options.config.common,

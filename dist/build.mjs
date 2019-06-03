@@ -4,6 +4,7 @@ import sass from './modules/sass.mjs'
 import imagemin from './modules/imagemin.mjs'
 
 // Presets
+import appPreset from './presets/app.mjs'
 import libPreset from './presets/lib.mjs'
 import vuePreset from './presets/vue.mjs'
 import vuePostcssPreset from './presets/vue-postcss.mjs'
@@ -12,6 +13,7 @@ import nodeAppPreset from './presets/node-app.mjs' //for cmd applications
 import nodeLibPreset from './presets/node-lib.mjs' //for libs used in cmd applications
 
 const presets = {
+  app: appPreset,
   lib: libPreset,
   vue: vuePreset,
   'vue-postcss': vuePostcssPreset,
