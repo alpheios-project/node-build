@@ -41,6 +41,7 @@
     "imagemin-jpegtran": "^6.0.0",
     "imagemin-optipng": "^7.0.0",
     "imagemin-svgo": "^7.0.0",
+    "inspectpack": "^4.2.1",
     "mini-css-extract-plugin": "^0.7.0",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "parallel-webpack": "^2.4.0",
@@ -82,7 +83,5 @@
       "sourceType": "module"
     }
   },
-  "devDependencies": {
-    "inspectpack": "^4.2.1"
-  }
+  "devDependencies": {}
 }
