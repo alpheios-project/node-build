@@ -1,3 +1,6 @@
+/*
+This preset if for building libraries that work in a node.js environment.
+ */
 import TerserPlugin from 'terser-webpack-plugin'
 import path from 'path'
 const projectRoot = process.cwd()

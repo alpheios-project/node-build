@@ -1,3 +1,6 @@
+/*
+This preset is for building applications that are used in a node.js environment.
+ */
 import path from 'path'
 const projectRoot = process.cwd()
 

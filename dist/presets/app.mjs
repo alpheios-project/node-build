@@ -1,3 +1,7 @@
+/*
+This preset is to be used for building apps that are distributed to the end user.
+It includes support for JS, CSS, and Sass.
+ */
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import TerserPlugin from 'terser-webpack-plugin'
 import sass from 'sass'
@@ -19,36 +23,9 @@ const webpack = {
     module: {
       rules: [
         {
-          test: /\.vue$/,
-          loader: 'vue-loader'
-        },
-        {
           test: /\.js$/,
           use: ['source-map-loader'],
           enforce: 'pre'
-        },
-        {
-          test: /\.(jpg|png)$/,
-          use: [{
-            loader: 'url-loader',
-            options: {
-              limit: 25000
-            }
-          }]
-        },
-        {
-          test: /\.svg$/,
-          loader: 'vue-svg-loader', // `vue-svg` for webpack 1.x
-          options: {
-            // optional [svgo](https://github.com/svg/svgo) options
-            svgo: {
-              plugins: [
-                {removeDoctype: true},
-                {removeComments: true},
-                {inlineStyles: false}
-              ]
-            }
-          }
         },
         {
           test: /\.css$/,
@@ -76,12 +53,6 @@ const webpack = {
               }
             }
           ]
-        },
-        {
-          test: /\.(htmlf)$/,
-          use: {
-            loader: 'vue-template-loader'
-          }
         }
       ]
     }

@@ -1,3 +1,7 @@
+/*
+This preset is for building libraries in a UMD format.
+It includes support for JS only.
+ */
 import TerserPlugin from 'terser-webpack-plugin'
 import path from 'path'
 const projectRoot = process.cwd()

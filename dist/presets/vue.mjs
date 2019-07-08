@@ -1,3 +1,6 @@
+/*
+This preset is for building libraries that are using Vue.js.
+ */
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import TerserPlugin from 'terser-webpack-plugin'
 import sass from 'sass'

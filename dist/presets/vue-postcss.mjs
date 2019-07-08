@@ -1,3 +1,6 @@
+/*
+Almost the same as `vue.mjs` template, but uses an additional PostCSS loader.
+ */
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import TerserPlugin from 'terser-webpack-plugin'
 import sass from 'sass'

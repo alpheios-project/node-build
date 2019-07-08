@@ -64,7 +64,7 @@ let printHelp = () => {
   console.log(`               Example (remove file_one.txt and file_two.txt): ${path.basename(process.argv[1])} clean --t=target/dir --f=file_one.txt --f=file_two.txt`)
   console.log(`               Example (remove all files in a target directory): ${path.basename(process.argv[1])} clean --t=target/dir`)
   console.log()
-  console.log(`    copy       Copy specified file(s) from a source directory to a target directory. If file already exist, they will not be overwritten. If not file names are specified, all files from a source directory will be copied to target`)
+  console.log(`    copy       Copy specified file(s) from a source directory to a target directory. If file already exist, they will not be overwritten. If no file names are specified, all files from a source directory will be copied to target`)
   console.log(`               Example (copy file_one.txt and file_two.txt from source to target): ${path.basename(process.argv[1])} copy --s=source/dir --t=target/dir --f=file_one.txt --f=file_two.txt`)
   console.log(`               Example (copy all files from source to target): ${path.basename(process.argv[1])} copy --s=source/dir --t=target/dir`)
   console.log()

@@ -1,9 +1,12 @@
+/*
+This preset is for building PWA applications that uses Vue.js.
+
+ */
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import TerserPlugin from 'terser-webpack-plugin'
 import sass from 'sass'
 import fibers from 'fibers'
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
-// import CleanWebpackPlugin from 'clean-webpack-plugin' // Does not work with ESM syntax because `module.parent` is undefined
 import WebpackCleanupPlugin from 'webpack-cleanup-plugin'
 import path from 'path'
 const projectRoot = process.cwd()
