@@ -116,23 +116,13 @@ const webpack = {
         }),
         new OptimizeCSSAssetsPlugin({})
       ]
-    },
-    plugins: [
-      new MiniCssExtractPlugin({
-        filename: 'style/style.min.css'
-      })
-    ]
+    }
   },
 
   // Settings that are used for development mode only
   development: {
     mode: 'development',
-    devtool: 'source-map',
-    plugins: [
-      new MiniCssExtractPlugin({
-        filename: 'style/style.css'
-      })
-    ]
+    devtool: 'source-map'
   }
 }
 
