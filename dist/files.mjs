@@ -105,6 +105,12 @@ let main = () => {
     const sourcePath = path.join(projectRoot, sourceDir)
     const targetPath = path.join(projectRoot, targetDir)
 
+    // Create target directory if does not exist
+    if (!fs.existsSync(targetPath)){
+      console.log(`${targetPath} does not exist, creating`)
+      fs.mkdirSync(targetPath);
+    }
+
     switch (operation) {
       case operations.clean:
         cleaned = cleanFiles(targetPath, files)
