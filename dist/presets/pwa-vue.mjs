@@ -2,6 +2,7 @@
 This preset is for building PWA applications that uses Vue.js.
 
  */
+import { TERSER_OPTIONS } from './data/settings.mjs'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import TerserPlugin from 'terser-webpack-plugin'
 import sass from 'sass'
@@ -108,24 +109,7 @@ const webpack = {
     mode: 'production',
     optimization: {
       minimizer: [
-        new TerserPlugin({
-          cache: true,
-          terserOptions: {
-            ecma: undefined,
-            warnings: false,
-            parse: {},
-            compress: {},
-            mangle: true, // Note `mangle.properties` is `false` by default.
-            module: false,
-            output: null,
-            toplevel: false,
-            nameCache: null,
-            ie8: false,
-            keep_classnames: true,
-            keep_fnames: false,
-            safari10: false
-          }
-        }),
+        new TerserPlugin(TERSER_OPTIONS),
         new OptimizeCSSAssetsPlugin({})
       ]
     },

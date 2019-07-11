@@ -1,6 +1,7 @@
 /*
 This preset if for building libraries that work in a node.js environment.
  */
+import { TERSER_OPTIONS } from './data/settings.mjs'
 import TerserPlugin from 'terser-webpack-plugin'
 import path from 'path'
 const projectRoot = process.cwd()
@@ -34,24 +35,7 @@ const webpack = {
     mode: 'production',
     optimization: {
       minimizer: [
-        new TerserPlugin({
-          cache: true,
-          terserOptions: {
-            ecma: undefined,
-            warnings: false,
-            parse: {},
-            compress: {},
-            mangle: true, // Note `mangle.properties` is `false` by default.
-            module: false,
-            output: null,
-            toplevel: false,
-            nameCache: null,
-            ie8: false,
-            keep_classnames: true,
-            keep_fnames: false,
-            safari10: false
-          }
-        })
+        new TerserPlugin(TERSER_OPTIONS)
       ]
     }
   },
