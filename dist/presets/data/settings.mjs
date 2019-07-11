@@ -17,7 +17,7 @@ const TERSER_OPTIONS = {
     "TypeError: Super expression must either be null or a function, not undefined" error.
     Please see https://github.com/airbnb/react-dates/issues/1456 for more details.
      */
-    keep_fnames: true, // Without this it will be
+    keep_fnames: true,
     safari10: false
   }
 }
