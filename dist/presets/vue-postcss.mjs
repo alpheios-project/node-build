@@ -5,7 +5,6 @@ import { TERSER_OPTIONS } from './data/settings.mjs'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import TerserPlugin from 'terser-webpack-plugin'
 import sass from 'sass'
-import fibers from 'fibers'
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
 import path from 'path'
 const projectRoot = process.cwd()
@@ -78,7 +77,6 @@ const webpack = {
               loader: 'sass-loader',
               options: {
                 implementation: sass,
-                fiber: fibers,
                 sourceMap: true
               }
             }

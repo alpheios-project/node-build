@@ -1,5 +1,4 @@
 import sass from 'sass'
-import fibers from 'fibers'
 import mkdirp from 'mkdirp'
 import path from 'path'
 import fs from 'fs'
@@ -48,8 +47,7 @@ let compileScss = async function (options) {
       file: options.src,
       outputStyle: options.style,
       sourceMap: options.sourceMap,
-      outFile: options.cssFileName,
-      fiber: fibers
+      outFile: options.cssFileName
     }, (error, result) => {
       if (error) results.push(error)
 
