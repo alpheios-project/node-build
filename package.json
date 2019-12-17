@@ -56,8 +56,8 @@
   },
   "peerDependencies": {},
   "engines": {
-    "node": ">= 12.3.0",
-    "npm": ">= 6.9.0"
+    "node": ">= 13.2.0",
+    "npm": ">= 6.13.0"
   },
   "eslintConfig": {
     "env": {
