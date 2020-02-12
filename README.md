@@ -33,3 +33,10 @@ The following presets are defined currently:
 * `lib` (default): suitable for a JS library module with no UI.
 * `vue`: a preset for modules that uses Vue.js and its single file components (`.vue`) as well as CSS,
 Sass, and JPEG, PNG, and SVG images.
+
+## Dependencies
+Automatic installation of packages that are required for `node-build` to work might cause issues in some repository configurations. To avoid this, all packages required for `node-build` tools has been moved to peer dependencies. They will not be installed by npm during installation of `node-build`.
+
+To avoid adding peer dependencies to the client's `package.json` manually one can use the following sequence of commands: `npx install-peerdeps alpheios-node-build --dev --only`. It will use an `install-peeredeps` npm packages to add peer dependencies of `node-build` into dev dependencies of the `package.json` of a client. 
+
+If `node-build` should not be installed but its dependencies steel need to be added to `package.json` as is the case with the root directory of a Lerna controlled monorepo we can install `node-build`, update dependencies, and then remove it: `npm i -D git://github.com/alpheios-project/node-build.git#v2.0.0 && npx install-peerdeps alpheios-node-build --dev --only-peers && npm un alpheios-node-build`. Please note that installation and removal are needed only because `node-build` is not published as an npm packages; publishing it will eliminate a need for that.
