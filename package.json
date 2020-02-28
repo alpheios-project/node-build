@@ -1,6 +1,6 @@
 {
   "name": "alpheios-node-build",
-  "version": "2.0.0-dev.2",
+  "version": "2.1.0",
   "description": "Alpheios Node Build Library",
   "main": "dist/build.js",
   "type": "module",
@@ -33,6 +33,7 @@
     "eslint-plugin-import": "^2.20.1",
     "fibers": "^4.0.2",
     "fs-extra": "^8.1.0",
+    "git-branch": "^2.0.1",
     "imagemin": "^7.0.1",
     "imagemin-jpegtran": "^6.0.0",
     "imagemin-optipng": "^7.1.0",

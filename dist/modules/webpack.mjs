@@ -46,6 +46,11 @@ export default function build (options) {
     options.codeAnalysis ? codeAnalysisConfig : {}
   )
 
+  // Difine a plugin for injection of constants
+  developmentConfig.plugins.push(new webpack.DefinePlugin({
+    LIB_BUILD_NUMBER: JSON.stringify(options.libBuildNumber)
+  }))
+
   if (!Array.isArray(options.modes)) {
     options.modes = [options.modes]
   }
