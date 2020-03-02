@@ -270,5 +270,3 @@ import(configModule)
     let build = new Build(configParams, config)
     build.runModules()
   }).catch(e => console.error(`Cannot resolve a config file module ${configModule}: ${e}`))
-
-export { generateBuildNumber }
