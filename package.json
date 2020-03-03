@@ -1,6 +1,6 @@
 {
   "name": "alpheios-node-build",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Alpheios Node Build Library",
   "main": "dist/build.js",
   "type": "module",

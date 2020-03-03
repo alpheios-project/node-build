@@ -47,13 +47,13 @@ export default function build (options) {
     options.codeAnalysis ? codeAnalysisConfig : {}
   )
 
-  if (!options.libBuildNumber) {
-    options.libBuildNumber = generateBuildNumber()
+  if (!options.buildNumber) {
+    options.buildNumber = generateBuildNumber()
   }
 
   // Difine a plugin for injection of constants
   developmentConfig.plugins.push(new webpack.DefinePlugin({
-    LIB_BUILD_NUMBER: JSON.stringify(options.libBuildNumber)
+    BUILD_NUMBER: JSON.stringify(options.buildNumber)
   }))
 
   if (!Array.isArray(options.modes)) {

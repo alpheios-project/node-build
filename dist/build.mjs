@@ -23,7 +23,7 @@ const optionDefinitions = [
   { name: 'mode', alias: 'M', type: String },
   { name: 'preset', alias: 'p', type: String },
   { name: 'externalConfig', alias: 'c', type: String, defaultOption: 'config.mjs' },
-  { name: 'libBuild', alias: 'l', type: String },
+  { name: 'buildNumber', alias: 'b', type: String },
   { name: 'codeAnalysis', alias: 'a', type: Boolean, defaultOption: false }
 ]
 
@@ -53,7 +53,7 @@ class Build {
       codeAnalysis: options.codeAnalysis,
       config: this.config.webpack,
       configTemplate: this.presetObject.webpack || {},
-      libBuildNumber: this.options.libBuild
+      buildNumber: this.options.buildNumber
     }
   }
 
@@ -104,8 +104,8 @@ class Build {
                       Sass, and JPEG, PNG, and SVG images.
       externalConfig - an optional parameter which can be used to override the default config file name. 
                  Ex.: "--externalConfig=config.mjs". Default is "config.mjs".
-      libBuild - an optional parameter which can be used to provide a library build number. It must not contain spaces.
-                    Ex.: "--libBuild=qa.20200101999". Defaults to an autogenrated value in a format of "branch-name.YYYYMMDDCCC".
+      buildNumber - an optional parameter which can be used to provide a build number. It must not contain spaces.
+                    Ex.: "--buildNumber=qa.20200101999". Defaults to an autogenrated value in a format of "branch-name.YYYYMMDDCCC".
       `)
   }
 
