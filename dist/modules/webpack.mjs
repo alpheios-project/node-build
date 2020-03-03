@@ -51,10 +51,16 @@ export default function build (options) {
     options.buildNumber = generateBuildNumber()
   }
 
-  // Difine a plugin for injection of constants
-  developmentConfig.plugins.push(new webpack.DefinePlugin({
+  if (!productionConfig.plugins) { productionConfig.plugins = [] }
+  if (!developmentConfig.plugins) { developmentConfig.plugins = [] }
+
+  const injectionPlugin = new webpack.DefinePlugin({
     BUILD_NUMBER: JSON.stringify(options.buildNumber)
-  }))
+  })
+
+  // Difine a plugin for injection of constants
+  productionConfig.plugins.push(injectionPlugin)
+  developmentConfig.plugins.push(injectionPlugin)
 
   if (!Array.isArray(options.modes)) {
     options.modes = [options.modes]

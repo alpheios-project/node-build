@@ -22,9 +22,9 @@ const optionDefinitions = [
   { name: 'module', alias: 'm', type: String },
   { name: 'mode', alias: 'M', type: String },
   { name: 'preset', alias: 'p', type: String },
-  { name: 'externalConfig', alias: 'c', type: String, defaultOption: 'config.mjs' },
+  { name: 'externalConfig', alias: 'c', type: String, defaultValue: 'config.mjs' },
   { name: 'buildNumber', alias: 'b', type: String },
-  { name: 'codeAnalysis', alias: 'a', type: Boolean, defaultOption: false }
+  { name: 'codeAnalysis', alias: 'a', type: Boolean, defaultValue: false }
 ]
 
 const presets = {
