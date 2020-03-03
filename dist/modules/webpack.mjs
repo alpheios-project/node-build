@@ -2,6 +2,7 @@ import webpack from 'webpack'
 import merge from 'webpack-merge'
 import chalk from 'chalk'
 import {createRequire} from 'module'
+import generateBuildNumber from '../support/build-number.mjs'
 const require = createRequire(import.meta.url)
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const { DuplicatesPlugin } = require("inspectpack/plugin");
@@ -45,6 +46,10 @@ export default function build (options) {
     options.config.development,
     options.codeAnalysis ? codeAnalysisConfig : {}
   )
+
+  if (!options.libBuildNumber) {
+    options.libBuildNumber = generateBuildNumber()
+  }
 
   // Difine a plugin for injection of constants
   developmentConfig.plugins.push(new webpack.DefinePlugin({
