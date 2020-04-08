@@ -2,7 +2,7 @@ import webpack from 'webpack'
 import merge from 'webpack-merge'
 import chalk from 'chalk'
 import {createRequire} from 'module'
-import generateBuildNumber from '../support/build-number.mjs'
+import generateBuildInfo from '../support/build-info.mjs'
 const require = createRequire(import.meta.url)
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const { DuplicatesPlugin } = require("inspectpack/plugin");
@@ -47,15 +47,15 @@ export default function build (options) {
     options.codeAnalysis ? codeAnalysisConfig : {}
   )
 
-  if (!options.buildNumber) {
-    options.buildNumber = generateBuildNumber()
-  }
+  const buildInfo = generateBuildInfo(options.buildTime)
 
   if (!productionConfig.plugins) { productionConfig.plugins = [] }
   if (!developmentConfig.plugins) { developmentConfig.plugins = [] }
 
   const injectionPlugin = new webpack.DefinePlugin({
-    BUILD_NUMBER: JSON.stringify(options.buildNumber)
+    BUILD_BRANCH: JSON.stringify(buildInfo.branch),
+    BUILD_NUMBER: JSON.stringify(buildInfo.number),
+    BUILD_NAME: JSON.stringify(buildInfo.name)
   })
 
   const prodInjectionPlugin = new webpack.DefinePlugin({
