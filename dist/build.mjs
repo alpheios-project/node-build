@@ -14,7 +14,6 @@ import nodeLibPreset from './presets/node-lib.mjs' //for libs used in cmd applic
 
 // Support
 import commandLineArgs from 'command-line-args'
-import generateBuildNumber from './support/build-number.mjs'
 import path from 'path'
 import chalk from 'chalk'
 
@@ -23,7 +22,7 @@ const optionDefinitions = [
   { name: 'mode', alias: 'M', type: String },
   { name: 'preset', alias: 'p', type: String },
   { name: 'externalConfig', alias: 'c', type: String, defaultValue: 'config.mjs' },
-  { name: 'buildNumber', alias: 'b', type: String },
+  { name: 'buildTime', alias: 't', type: Number },
   { name: 'codeAnalysis', alias: 'a', type: Boolean, defaultValue: false }
 ]
 
@@ -53,7 +52,7 @@ class Build {
       codeAnalysis: options.codeAnalysis,
       config: this.config.webpack,
       configTemplate: this.presetObject.webpack || {},
-      buildNumber: this.options.buildNumber
+      buildTime: this.options.buildTime
     }
   }
 
@@ -104,8 +103,9 @@ class Build {
                       Sass, and JPEG, PNG, and SVG images.
       externalConfig - an optional parameter which can be used to override the default config file name. 
                  Ex.: "--externalConfig=config.mjs". Default is "config.mjs".
-      buildNumber - an optional parameter which can be used to provide a build number. It must not contain spaces.
-                    Ex.: "--buildNumber=qa.20200101999". Defaults to an autogenrated value in a format of "branch-name.YYYYMMDDCCC".
+      buildTime - an optional parameter that provides a build date and time that will be used for generation of a build info.
+                  It is a number of milliseconds elapsed since January 1, 1970 00:00:00 UTC.
+                  Ex.: "--buildTime=1586360771369". Defaults to a current date and time value.
       `)
   }
 
@@ -192,5 +192,3 @@ import(configModule)
       console.error(`A build process failed:`, e)
     }
   }).catch(e => console.error(`Cannot resolve a config file module ${configModule}:`, e))
-
-export { generateBuildNumber }
