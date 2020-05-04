@@ -72,18 +72,58 @@ export default function build (options) {
   productionConfig.plugins.push(injectionPlugin, prodInjectionPlugin)
   developmentConfig.plugins.push(injectionPlugin, devInjectionPlugin)
 
+  /*
+  If any custom plugins are listed in a configuration, they should be added to the plugin list.
+  Constructor of each plugin will be passed an object that will contain a `buildInfo` prop.
+   */
+  if (options.config.custom) {
+    if (options.config.custom.production && options.config.custom.production.plugins) {
+      options.config.custom.production.plugins.forEach(plugin => {
+        productionConfig.plugins.push(new plugin({
+          buildInfo
+        }))
+      })
+    }
+
+    if (options.config.custom) {
+      if (options.config.custom.development && options.config.custom.development.plugins) {
+        options.config.custom.development.plugins.forEach(plugin => {
+          developmentConfig.plugins.push(new plugin({
+            buildInfo
+          }))
+        })
+      }
+    }
+
+    if (options.config.custom.common && options.config.custom.common.plugins) {
+      options.config.custom.common.plugins.forEach(plugin => {
+        productionConfig.plugins.push(new plugin({
+          buildInfo
+        }))
+      })
+      options.config.custom.common.plugins.forEach(plugin => {
+        developmentConfig.plugins.push(new plugin({
+          buildInfo
+        }))
+      })
+    }
+  }
+
   if (!Array.isArray(options.modes)) {
     options.modes = [options.modes]
   }
-  let tasks = []
-  if (options.modes.includes('production')) { tasks.push(productionConfig) }
-  if (options.modes.includes('development')) { tasks.push(developmentConfig) }
+  let webpackConfigs = [] // eslint-disable-line prefer-const
+  if (options.modes.includes('production')) { webpackConfigs.push(productionConfig) }
+  if (options.modes.includes('development')) { webpackConfigs.push(developmentConfig) }
 
   let startTime = new Date().getTime()
   console.log(chalk.blue(`\nWebpack tasks:`))
-  for (const task of tasks) {
-    webpack(task, (err, stats) => {
-      console.log(`Task: ${task.mode}`) // Inserts an empty line
+  for (const config of webpackConfigs) {
+    let compiler = webpack(config)
+    new webpack.ProgressPlugin().apply(compiler)
+
+    compiler.run((err, stats) => {
+      console.log(`Task: ${config.mode}`) // Inserts an empty line
       if (err) {
         console.error(err.stack || err)
         if (err.details) {
