@@ -63,7 +63,7 @@ export default class Builder {
   async runModules () {
     console.log(chalk.bold.white(`\nRunning ${this.options.module} module(s) in ${this.options.mode} mode(s) with a ${this.options.preset} preset. Config file: ${this._configPath}. Output level: ${this.options.outputLevel}. Code analysis is ${this.options.codeAnalysis ? 'on' : 'off'}`))
 
-    if ([Builder.runModules.IMAGEMIN, Builder.runModules.ALL].includes(this.options.module)) {
+    if ([Builder.moduleNames.IMAGEMIN, Builder.moduleNames.ALL].includes(this.options.module)) {
       if (this.config.imagemin) {
         try {
           await imagemin(this.config.imagemin)
@@ -75,7 +75,7 @@ export default class Builder {
       }
     }
 
-    if ([Builder.runModules.SASS, Builder.runModules.ALL].includes(this.options.module)) {
+    if ([Builder.moduleNames.SASS, Builder.moduleNames.ALL].includes(this.options.module)) {
       if (this.config.sass) {
         try {
           await sass(this.config.sass)
@@ -88,7 +88,7 @@ export default class Builder {
     }
 
     // Webpack task mast be executed last
-    if ([Builder.runModules.WEBPACK, Builder.runModules.ALL].includes(this.options.module)) {
+    if ([Builder.moduleNames.WEBPACK, Builder.moduleNames.ALL].includes(this.options.module)) {
       if (this.webpackOptions) {
         try {
           await webpack(this.webpackOptions, this.options.outputLevel)
@@ -104,7 +104,7 @@ export default class Builder {
 
 // The first module is a default one, it will run all modules at once
 // The last module is always a webpack. It will run after all other modules
-Builder.runModules = {
+Builder.moduleNames = {
   ALL: 'all',
   IMAGEMIN: 'imagemin',
   SASS: 'sass',
