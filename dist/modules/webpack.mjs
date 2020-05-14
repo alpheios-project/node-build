@@ -114,8 +114,9 @@ export default async function build (options, outputLevel) {
     options.modes = [options.modes]
   }
   let webpackConfigs = [] // eslint-disable-line prefer-const
-  if (options.modes.includes('production')) { webpackConfigs.push(productionConfig) }
+  // If both mods are on, development should be run before production to avoid overwriting artefacts of production
   if (options.modes.includes('development')) { webpackConfigs.push(developmentConfig) }
+  if (options.modes.includes('production')) { webpackConfigs.push(productionConfig) }
 
   let startTime = new Date().getTime()
   console.log(chalk.blue(`\nWebpack tasks:`))
@@ -134,8 +135,8 @@ export default async function build (options, outputLevel) {
 
 const runCompiler = async (compiler, config, outputLevel) => {
   return new Promise((resolve, reject) => {
+    console.log(`Task: ${config.mode}`)
     compiler.run((err, stats) => {
-      console.log(`Task: ${config.mode}`) // Inserts an empty line
       if (err) {
         console.error(err.stack || err)
         if (err.details) {
