@@ -1,3 +1,4 @@
+import { outputLevels } from './consts/consts.js'
 import webpack from 'webpack'
 import merge from 'webpack-merge'
 import chalk from 'chalk'
@@ -31,7 +32,7 @@ const codeAnalysisConfig = {
   ]
 }
 
-export default function build (options) {
+export default async function build (options, outputLevel) {
   const productionConfig = merge.smartStrategy(mergeStrategy)(
     options.configTemplate.common,
     options.configTemplate.production,
@@ -120,8 +121,19 @@ export default function build (options) {
   console.log(chalk.blue(`\nWebpack tasks:`))
   for (const config of webpackConfigs) {
     let compiler = webpack(config)
-    new webpack.ProgressPlugin().apply(compiler)
+    if (outputLevel !== outputLevels.MIN) {
+      new webpack.ProgressPlugin().apply(compiler)
+    }
+    await runCompiler(compiler, config, outputLevel)
+  }
 
+  let duration = new Date().getTime() - startTime
+  console.log(chalk.blue(`Webpack tasks completed in ${duration} ms`))
+}
+
+
+const runCompiler = async (compiler, config, outputLevel) => {
+  return new Promise((resolve, reject) => {
     compiler.run((err, stats) => {
       console.log(`Task: ${config.mode}`) // Inserts an empty line
       if (err) {
@@ -131,20 +143,23 @@ export default function build (options) {
         }
         return
       }
-      const info = stats.toJson()
-      console.log()
-      console.log(stats.toString({
-        chunks: true,
-        assets: true,
-        hash: true,
-        colors: true
-      }))
 
-      if (stats.hasWarnings()) {
-        console.log(chalk.bold.bgYellow(`\nWARNINGS`))
-        if (Array.isArray(info.warnings)) {
-          for (const warn of info.warnings) {
-            console.log(chalk.yellow(`${warn}`))
+      if (outputLevel !== outputLevels.MIN) {
+        const info = stats.toJson()
+        console.log()
+        console.log(stats.toString({
+          chunks: true,
+          assets: true,
+          hash: true,
+          colors: true
+        }))
+
+        if (stats.hasWarnings()) {
+          console.log(chalk.bold.bgYellow(`\nWARNINGS`))
+          if (Array.isArray(info.warnings)) {
+            for (const warn of info.warnings) {
+              console.log(chalk.yellow(`${warn}`))
+            }
           }
         }
       }
@@ -156,10 +171,9 @@ export default function build (options) {
             console.log(chalk.red(`${err}`))
           }
         }
+        reject(info.errors)
       }
-
-      let duration = new Date().getTime() - startTime
-      console.log(chalk.blue(`\nWebpack task completed in ${duration} ms`))
+      resolve()
     })
-  }
+  })
 }
