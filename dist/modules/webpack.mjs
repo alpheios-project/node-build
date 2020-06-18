@@ -159,20 +159,38 @@ const runCompiler = async (compiler, config, outputLevel) => {
           console.log(chalk.bold.bgYellow(`\nWARNINGS`))
           if (Array.isArray(info.warnings)) {
             for (const warn of info.warnings) {
-              console.log(chalk.yellow(`${warn}`))
+              let warnMsg = 'Unsupported warning format'
+              if (typeof warn === 'string') {
+                // In webpack 4, it is a string
+                warnMsg = warn
+              } else if (typeof warn === 'object') {
+                // In webpack 5, it is an object
+                warnMsg = warn.details // Can also use warn.message for more compact output
+              }
+              console.warn(chalk.yellow(`${warnMsg}`))
+              console.log() // Separate warnings with an empty line
             }
           }
         }
-      }
 
-      if (stats.hasErrors()) {
-        console.log(chalk.bold.bgRed(`\nERRORS`))
-        if (Array.isArray(info.errors)) {
-          for (const err of info.errors) {
-            console.log(chalk.red(`${err}`))
+        if (stats.hasErrors()) {
+          console.log(chalk.bold.bgRed(`\nERRORS`))
+          if (Array.isArray(info.errors)) {
+            for (const err of info.errors) {
+              let errMsg = 'Unsupported error format'
+              if (typeof err === 'string') {
+                // In webpack 4, it is a string
+                errMsg = err
+              } else if (typeof err === 'object') {
+                // In webpack 5, it is an object
+                errMsg = err.details // Can also use err.message for more compact output
+              }
+              console.error(chalk.red(`${errMsg}`))
+              console.log() // Separate errros with an empty line
+            }
           }
+          reject(info.errors)
         }
-        reject(info.errors)
       }
       resolve()
     })
