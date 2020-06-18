@@ -145,8 +145,8 @@ const runCompiler = async (compiler, config, outputLevel) => {
         return
       }
 
+      const info = stats.toJson()
       if (outputLevel !== outputLevels.MIN) {
-        const info = stats.toJson()
         console.log()
         console.log(stats.toString({
           chunks: true,
@@ -172,25 +172,25 @@ const runCompiler = async (compiler, config, outputLevel) => {
             }
           }
         }
+      }
 
-        if (stats.hasErrors()) {
-          console.log(chalk.bold.bgRed(`\nERRORS`))
-          if (Array.isArray(info.errors)) {
-            for (const err of info.errors) {
-              let errMsg = 'Unsupported error format'
-              if (typeof err === 'string') {
-                // In webpack 4, it is a string
-                errMsg = err
-              } else if (typeof err === 'object') {
-                // In webpack 5, it is an object
-                errMsg = err.details // Can also use err.message for more compact output
-              }
-              console.error(chalk.red(`${errMsg}`))
-              console.log() // Separate errros with an empty line
+      if (stats.hasErrors()) {
+        console.log(chalk.bold.bgRed(`\nERRORS`))
+        if (Array.isArray(info.errors)) {
+          for (const err of info.errors) {
+            let errMsg = 'Unsupported error format'
+            if (typeof err === 'string') {
+              // In webpack 4, it is a string
+              errMsg = err
+            } else if (typeof err === 'object') {
+              // In webpack 5, it is an object
+              errMsg = err.details // Can also use err.message for more compact output
             }
+            console.error(chalk.red(`${errMsg}`))
+            console.log() // Separate errros with an empty line
           }
-          reject(info.errors)
         }
+        reject(info.errors)
       }
       resolve()
     })
