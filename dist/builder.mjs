@@ -4,6 +4,7 @@ import { outputLevels } from './modules/consts/consts.js'
 import appPreset from './presets/app.mjs'
 import libPreset from './presets/lib.mjs'
 import vuePreset from './presets/vue.mjs'
+import vue3Preset from './presets/vue3.mjs'
 import vuePostcssPreset from './presets/vue-postcss.mjs'
 import pwaVuePreset from './presets/pwa-vue.mjs'
 import nodeAppPreset from './presets/node-app.mjs' //for cmd applications
@@ -115,6 +116,7 @@ Builder.presets = {
   app: appPreset,
   lib: libPreset,
   vue: vuePreset,
+  vue3: vue3Preset,
   'vue-postcss': vuePostcssPreset,
   'pwa-vue': pwaVuePreset,
   'node-app': nodeAppPreset,
