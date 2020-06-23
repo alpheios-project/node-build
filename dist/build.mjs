@@ -36,7 +36,7 @@ const printUsageStatement = () => {
                   Ex.: "--buildTime=1586360771369". Defaults to a current date and time value.
       codeAnalysis - whether to provide code analysis (optional). Possible values are true or false.
                      Ex.: "--codeAnalysis=true". Defaults to false.
-      outputLevel - how much output to print (optional). Possible values are: "min", "normal".
+      outputLevel - how much output to print (optional). Possible values are: "min", "normal", "verbose".
                     Ex.: "--outputLevel=normal". Defaults to "normal".
       `)
 }

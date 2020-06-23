@@ -1,6 +1,7 @@
 const outputLevels = {
   MIN: 'min',
-  NORMAL: 'normal'
+  NORMAL: 'normal',
+  VERBOSE: 'verbose'
 }
 
 export { outputLevels }
