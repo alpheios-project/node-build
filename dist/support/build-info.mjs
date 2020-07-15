@@ -27,7 +27,17 @@ const generateTimestamp = (datetime = Date.now()) => {
  * @returns {object} - A build number in the following format: branch-name.YYYYMMDDCCC
  */
 const generateBuildInfo = (datetime = Date.now()) => {
-  let branchName = branch.sync()
+  let branchName
+  try {
+    branchName = branch.sync()
+  } catch (err) {
+    /*
+    If build is running not from a git directory, as in the case of a zipped distributable,
+    no branch info will be available. It will result in `branch` throwing an error.
+    In that case we'll use a placeholder specified below instead of an actual branch name.
+     */
+    branchName = 'headless'
+  }
   if (branchName === 'master') {
     branchName = 'dev'
   }
