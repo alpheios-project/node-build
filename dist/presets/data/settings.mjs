@@ -1,5 +1,4 @@
 const TERSER_OPTIONS = {
-  cache: true,
   terserOptions: {
     ecma: 8,
     warnings: false,

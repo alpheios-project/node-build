@@ -1,17 +1,13 @@
+/* global import */
 import { outputLevels } from './consts/consts.js'
 import webpack from 'webpack'
-import merge from 'webpack-merge'
 import chalk from 'chalk'
 import {createRequire} from 'module'
 import generateBuildInfo from '../support/build-info.mjs'
 const require = createRequire(import.meta.url)
+const { merge } = require('webpack-merge')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-const { DuplicatesPlugin } = require("inspectpack/plugin");
-const mergeStrategy = {
-  'externals': 'replace',
-  'resolve.mainFields': 'append',
-  'resolve.alias': 'replace'
-}
+const { DuplicatesPlugin } = require('inspectpack/plugin')
 
 const codeAnalysisConfig = {
   plugins: [
@@ -33,14 +29,14 @@ const codeAnalysisConfig = {
 }
 
 export default async function build (options, outputLevel) {
-  const productionConfig = merge.smartStrategy(mergeStrategy)(
+  const productionConfig = merge(
     options.configTemplate.common,
     options.configTemplate.production,
     options.config.common,
     options.config.production,
     options.codeAnalysis ? codeAnalysisConfig : {}
   )
-  const developmentConfig = merge.smartStrategy(mergeStrategy)(
+  const developmentConfig = merge(
     options.configTemplate.common,
     options.configTemplate.development,
     options.config.common,
@@ -179,9 +175,6 @@ const runCompiler = async (compiler, config, outputLevel) => {
           entrypoints: true,
           chunks: true,
           warnings: true,
-          warningsFilter: [
-            /Failed to parse source map/
-          ],
           errors: true
         } }
       }
@@ -194,8 +187,7 @@ const runCompiler = async (compiler, config, outputLevel) => {
             modules: true,
             reasons: true,
             children: true,
-            source: true,
-            warningsFilter: [] // Do not filter any warnings
+            source: true
           } }
       }
       console.log()
