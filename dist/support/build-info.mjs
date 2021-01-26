@@ -14,7 +14,7 @@ const generateTimestamp = (datetime = Date.now()) => {
   const month = (now.getMonth() + 1).toString(10).padStart(2, '0')
   const day = now.getDate().toString(10).padStart(2, '0')
   // Counter is a number of two-minute intervals elapsed since midnight
-  const counter = Math.round((now.getHours() * 60 + now.getMinutes()) / 2).toString(10).padStart(3)
+  const counter = Math.round((now.getHours() * 60 + now.getMinutes()) / 2).toString(10).padStart(3, '0')
   return `${year}${month}${day}${counter}`
 }
 
