@@ -46,7 +46,7 @@ const generateBuildInfo = (datetime = Date.now()) => {
   return {
     branch: branchName,
     number: timestamp,
-    name: `${branchPart}${timestamp}`.replace(' ','.')
+    name: `${branchPart}${timestamp}`
   }
 }
 
