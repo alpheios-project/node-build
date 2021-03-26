@@ -43,6 +43,8 @@ const generateBuildInfo = (datetime = Date.now()) => {
   }
   let branchPart = (branchName === 'production') ? '' : branchName + '.'
   const timestamp = generateTimestamp(datetime)
+
+  console.info('master - buildName', `${branchPart}${timestamp}`.replace(' ','.'))
   return {
     branch: branchName,
     number: timestamp,
