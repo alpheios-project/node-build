@@ -6,7 +6,7 @@ import { TERSER_OPTIONS } from './data/settings.mjs'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import TerserPlugin from 'terser-webpack-plugin'
 import sass from 'sass'
-import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
 import WebpackCleanupPlugin from 'webpack-cleanup-plugin'
 import path from 'path'
 const projectRoot = process.cwd()
@@ -108,7 +108,7 @@ const webpack = {
     optimization: {
       minimizer: [
         new TerserPlugin(TERSER_OPTIONS),
-        new OptimizeCSSAssetsPlugin({})
+        new CssMinimizerPlugin()
       ]
     },
     plugins: [

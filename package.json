@@ -1,6 +1,6 @@
 {
   "name": "alpheios-node-build",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "description": "Alpheios Node Build Library",
   "main": "dist/builder.mjs",
   "type": "module",
@@ -15,8 +15,6 @@
     "url": "https://github.com/alpheios-project/node-build/issues"
   },
   "homepage": "https://github.com/alpheios-project/node-build#readme",
-  "dependencies": {},
-  "devDependencies": {},
   "peerDependencies": {
     "@babel/core": "^7.12.3",
     "@babel/plugin-transform-modules-commonjs": "^7.12.1",
@@ -29,8 +27,9 @@
     "babel-loader": "^8.1.0",
     "babel-plugin-dynamic-import-node": "^2.3.3",
     "chalk": "^4.1.0",
-    "css-loader": "^5.0.1",
     "command-line-args": "^5.1.1",
+    "css-minimizer-webpack-plugin": "^3.4.1",
+    "css-loader": "^5.0.1",
     "fibers": "^5.0.0",
     "fs-extra": "^9.0.1",
     "git-branch": "^2.0.1",
@@ -40,7 +39,6 @@
     "imagemin-svgo": "^8.0.0",
     "inspectpack": "^4.5.2",
     "mini-css-extract-plugin": "^1.3.0",
-    "optimize-css-assets-webpack-plugin": "^5.0.4",
     "path": "^0.12.7",
     "postcss-import": "^13.0.0",
     "postcss-loader": "^4.0.4",
@@ -55,7 +53,7 @@
     "vue-svg-loader": "^0.16.0",
     "vue-template-compiler": "^2.6.12",
     "vue-template-loader": "^1.1.0",
-    "webpack": "^5.4.0",
+    "webpack": "^5.72.0",
     "webpack-bundle-analyzer": "^4.1.0",
     "webpack-cleanup-plugin": "^0.5.1",
     "webpack-merge": "^5.3.0"
