@@ -36,7 +36,7 @@ const webpack = {
           use: [{
             loader: 'url-loader',
             options: {
-              limit: 65000
+              limit: 1500
             }
           }]
         },
